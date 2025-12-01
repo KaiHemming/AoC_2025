@@ -1,4 +1,4 @@
-f = open("input","r")
+f = open("Day 1/input","r")
 lines = f.readlines()
 
 dial = 50
@@ -8,12 +8,12 @@ for line in lines:
     char, num = line[0:1],int(line[1:])
     if char == "L":
         dial -= num
-        while (dial < 0):
-            dial = 100 + dial
+        if dial < 0:
+            dial = dial % 100
     if char == "R":
         dial += num
-        while (dial > 99):
-            dial = dial - 100
+        if dial > 99:
+            dial = dial % 100
     if dial == 0:
         num0s += 1
 

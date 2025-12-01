@@ -1,4 +1,5 @@
-f = open("input","r")
+import math
+f = open("Day 1/input","r")
 lines = f.readlines()
 
 dial = 50
@@ -11,19 +12,19 @@ for line in lines:
         started = dial # If started on 0, don't count on first loop.
         dial -= num
 
-        while (dial < 0):
-            dial = 100 + dial
-            if started != 0:
-                num0s += 1
-            started = dial
+        if dial < 0:
+            num0s += abs(math.floor(dial/100))
+            dial = dial % 100
+            if started == 0:
+                num0s -= 1
 
         if dial == 0: # Count if ended on 0
             num0s += 1
 
     if char == "R":
         dial += num
-        while (dial > 99):
-            dial = dial - 100
-            num0s += 1
+        if dial > 99:
+            num0s += abs(math.floor(dial/100))
+            dial = dial % 100
 
 print(num0s)
