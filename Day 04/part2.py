@@ -9,7 +9,7 @@ lastRemoved = 1
 while lastRemoved > 0:
     lastRemoved = 0
     for y in range (0, len(lines)):
-        for x in range(0, len(lines[y])):
+        for x in range(0, len(lines[y].strip())):
             if lines[y][x] == '@':
                 adjacent = 0
                 for position in aoe:

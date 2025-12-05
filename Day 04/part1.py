@@ -6,7 +6,7 @@ maxRolls = 4
 aoe = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]
 
 for y in range (0, len(lines)):
-    for x in range(0, len(lines[y])):
+    for x in range(0, len(lines[y].strip())):
         if lines[y][x] == '@':
             adjacent = 0
             for position in aoe:
