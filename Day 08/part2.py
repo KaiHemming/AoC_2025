@@ -7,6 +7,7 @@ coords = []
 coordsToCircuit = {}
 circuitsToCoords = {}
 
+# Parse
 for i in range(0,len(lines)):
     coordsString = lines[i].strip().split(",")
     coord = (int(coordsString[0]), int(coordsString[1]), int(coordsString[2]))
@@ -14,13 +15,10 @@ for i in range(0,len(lines)):
     coordsToCircuit[coord] = i + 1
     circuitsToCoords[i+1] = [coord]
 
-# print(coords)
-# print(coordsToCircuit)
 numCoords = len(coords)
-print(numCoords)
 
-# Returns closest coordinates indexes in list
-def getClosestIndexes(coordList):
+# Returns closest coordinates in min-heap
+def getClosestCoords(coordList):
     distances = []
     combinations = set()
 
@@ -41,14 +39,13 @@ def getClosestIndexes(coordList):
     heapq.heapify(distances)
     return distances
 
-heap = getClosestIndexes(coords)
+heap = getClosestCoords(coords)
 # print(heap)
-# print(coordsToCircuit)
 
+# Join circuits until all in one circuit
 lastJoined = None
 while len(circuitsToCoords.keys()) > 1:
     curNode = heapq.heappop(heap)
-    # print(coords[curNode[1][0]], coords[curNode[1][1]])
     coord1 = coords[curNode[1][0]]
     coord2 = coords[curNode[1][1]]
     
@@ -62,8 +59,9 @@ while len(circuitsToCoords.keys()) > 1:
             circuitsToCoords[circuit1].append(coord)
             circuitsToCoords[circuit2].remove(coord)
         circuitsToCoords.pop(circuit2)
-        # print("Joined", coordsToChange, "to", circuit1, circuitsToCoords[circuit1])
         lastJoined = (coord1, coord2)
+        # print("Joined", coordsToChange, "to", circuit1, circuitsToCoords[circuit1])
 
+# Print mult Xs of last joined
 print(lastJoined)
 print(lastJoined[0][0] * lastJoined[1][0])

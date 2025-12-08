@@ -9,6 +9,7 @@ circuitsToCoords = {}
 joins = 1000
 nLargest = 3
 
+# Parse
 for i in range(0,len(lines)):
     coordsString = lines[i].strip().split(",")
     coord = (int(coordsString[0]), int(coordsString[1]), int(coordsString[2]))
@@ -16,11 +17,8 @@ for i in range(0,len(lines)):
     coordsToCircuit[coord] = i + 1
     circuitsToCoords[i+1] = [coord]
 
-# print(coords)
-# print(coordsToCircuit)
-
-# Returns closest coordinates indexes in list
-def getClosestIndexes(coordList):
+# Returns closest coordinates in min-heap
+def getClosestCoords(coordList):
     distances = []
     combinations = set()
 
@@ -41,25 +39,28 @@ def getClosestIndexes(coordList):
     heapq.heapify(distances)
     return distances
 
-heap = getClosestIndexes(coords)
+heap = getClosestCoords(coords)
 # print(heap)
 
+# Join circuits joins times
 for _ in range(0, joins):
     curNode = heapq.heappop(heap)
-    # print(coords[curNode[1][0]], coords[curNode[1][1]])
-    circuit1 = coordsToCircuit[coords[curNode[1][0]]]
-    circuit2 = coordsToCircuit[coords[curNode[1][1]]]
-    if coordsToCircuit[coords[curNode[1][1]]] != coordsToCircuit[coords[curNode[1][0]]]:
+    coord1 = coords[curNode[1][0]]
+    coord2 = coords[curNode[1][1]]
+    
+    circuit1 = coordsToCircuit[coord1]
+    circuit2 = coordsToCircuit[coord2]
+
+    if coordsToCircuit[coord2] != coordsToCircuit[coord1]:
         coordsToChange = circuitsToCoords[circuit2][:]
         for coord in coordsToChange:
             coordsToCircuit[coord] = circuit1
             circuitsToCoords[circuit1].append(coord)
             circuitsToCoords[circuit2].remove(coord)
         circuitsToCoords.pop(circuit2)
-        print("Joined", coordsToChange, "to", circuit1, circuitsToCoords[circuit1])
+        # print("Joined", coordsToChange, "to", circuit1, circuitsToCoords[circuit1])
 
-# print(circuitsToCoords)
-
+# Get 3 largest circuits
 largest = [0] * nLargest
 for circuit in circuitsToCoords:
     numInCircuit = len(circuitsToCoords[circuit])
@@ -74,6 +75,7 @@ for circuit in circuitsToCoords:
     
 print(largest)
 
+# Mult largest 3 num in circuits
 total = 1
 for num in largest:
     total *= num
