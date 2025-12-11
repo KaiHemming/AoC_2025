@@ -15,8 +15,6 @@ for i in range(0,len(lines)):
     coordsToCircuit[coord] = i + 1
     circuitsToCoords[i+1] = [coord]
 
-numCoords = len(coords)
-
 # Returns closest coordinates in min-heap
 def getClosestCoords(coordList):
     distances = []
